@@ -1,6 +1,5 @@
 package ru.spectr.recyclerwithedit
 
-import android.os.Bundle
 import androidx.recyclerview.widget.DiffUtil
 
 
@@ -16,26 +15,24 @@ data class Item(
             override fun areContentsTheSame(oldItem: Item, newItem: Item) = oldItem == newItem
 
             override fun getChangePayload(oldItem: Item, newItem: Item): Any? {
-                val bundle = Bundle()
+                val payload = mutableSetOf<Int>()
 
                 if (oldItem.editMode != newItem.editMode)
-                    bundle.putBoolean(PAYLOAD_EDIT_MODE, newItem.editMode)
+                    payload.add(PAYLOAD_EDIT_MODE)
 
                 if (oldItem.isChecked != newItem.isChecked)
-                    bundle.putBoolean(PAYLOAD_CHECKED, newItem.isChecked)
+                    payload.add(PAYLOAD_CHECKED)
 
                 if (oldItem.text != newItem.text)
-                    bundle.putString(PAYLOAD_TEXT, newItem.text)
+                    payload.add(PAYLOAD_TEXT)
 
-                if (!bundle.isEmpty)
-                    return bundle
-
-                return super.getChangePayload(oldItem, newItem)
+                return if (payload.isNotEmpty()) payload
+                else super.getChangePayload(oldItem, newItem)
             }
         }
 
-        const val PAYLOAD_EDIT_MODE = "PAYLOAD_EDIT_MODE"
-        const val PAYLOAD_CHECKED = "PAYLOAD_CHECKED"
-        const val PAYLOAD_TEXT = "PAYLOAD_TEXT"
+        const val PAYLOAD_EDIT_MODE = 0
+        const val PAYLOAD_CHECKED = 1
+        const val PAYLOAD_TEXT = 2
     }
 }

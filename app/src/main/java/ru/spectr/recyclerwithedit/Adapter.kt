@@ -1,6 +1,5 @@
 package ru.spectr.recyclerwithedit
 
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,15 +34,19 @@ class Adapter : ListAdapter<Item, Adapter.ViewHolder>(Item.DIFF) {
             binding.cbSelect.visibility = if (item.editMode) View.VISIBLE else View.GONE
         }
 
-        fun bindPayload(payload: Bundle) {
-            if (payload.containsKey(PAYLOAD_EDIT_MODE))
-                binding.cbSelect.visibility = if (payload.getBoolean(PAYLOAD_EDIT_MODE)) View.VISIBLE else View.GONE
+        fun bindTo(item: Item, payloads: List<Any>) {
+            for (payload in payloads) {
+                val set = payload as Set<*>
 
-            if (payload.containsKey(PAYLOAD_CHECKED))
-                binding.cbSelect.isChecked = payload.getBoolean(PAYLOAD_CHECKED)
+                if (set.contains(PAYLOAD_EDIT_MODE))
+                    binding.cbSelect.visibility = if (item.editMode) View.VISIBLE else View.GONE
 
-            if (payload.containsKey(PAYLOAD_TEXT))
-                binding.tvText.text = payload.getString(PAYLOAD_TEXT)
+                if (set.contains(PAYLOAD_CHECKED))
+                    binding.cbSelect.isChecked = item.isChecked
+
+                if (set.contains(PAYLOAD_TEXT))
+                    binding.tvText.text = item.text
+            }
         }
     }
 
@@ -52,7 +55,7 @@ class Adapter : ListAdapter<Item, Adapter.ViewHolder>(Item.DIFF) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int, payloads: MutableList<Any>) {
         if (payloads.isEmpty()) super.onBindViewHolder(holder, position, payloads)
-        else holder.bindPayload(payloads[0] as Bundle)
+        else holder.bindTo(getItem(position), payloads)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bindTo(getItem(position))
