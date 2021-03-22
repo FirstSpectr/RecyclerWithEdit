@@ -3,6 +3,7 @@ package ru.spectr.recyclerwithedit
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
 import ru.spectr.recyclerwithedit.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -16,6 +17,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.rvList.adapter = adapter
+        binding.rvList.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         adapter.submitList(generateList())
 
         binding.tvEdit.setOnClickListener {
