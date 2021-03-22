@@ -59,5 +59,5 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun generateList(n: Int = 10) = List(n) { Item(it, "ITEM $it") }
+    private fun generateList(n: Int = 30) = List(n) { Item(it, "ITEM $it") }
 }
