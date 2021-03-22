@@ -18,10 +18,12 @@ class Adapter : ListAdapter<Item, Adapter.ViewHolder>(Item.DIFF) {
         init {
             binding.root.setOnClickListener {
                 if (getItem(adapterPosition).editMode)
-                    binding.cbSelect.isChecked = !binding.cbSelect.isChecked
+                    binding.cbSelect.toggle()
             }
 
             binding.cbSelect.setOnCheckedChangeListener { _, isChecked ->
+                // Also, we can make isChecked immutable, and update it via replaceAll, and then submitList, but it looks like overengineering
+                // list.replaceAll { if(it == item) it.copy(isChecked = isChecked) else it }
                 getItem(adapterPosition).isChecked = isChecked
                 onCheckedChange()
             }
@@ -45,10 +47,8 @@ class Adapter : ListAdapter<Item, Adapter.ViewHolder>(Item.DIFF) {
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        return ViewHolder(ItemBinding.inflate(inflater, parent, false))
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+        ViewHolder(ItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int, payloads: MutableList<Any>) {
         if (payloads.isEmpty()) super.onBindViewHolder(holder, position, payloads)

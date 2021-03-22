@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
 
             val newList = adapter.currentList.toMutableList()
 
+
             if (editMode) newList.replaceAll { it.copy(editMode = true) }
             else newList.replaceAll { it.copy(editMode = false, isChecked = false) }
 
@@ -48,18 +49,15 @@ class MainActivity : AppCompatActivity() {
             adapter.submitList(newList)
         }
 
-        adapter.onCheckedChange = {
-            binding.btDelete.isEnabled = adapter.currentList.any { it.isChecked }
-        }
+        adapter.onCheckedChange = { binding.btDelete.isEnabled = adapter.currentList.any { it.isChecked } }
     }
 
     private fun setEditModeEnabled(editMode: Boolean) {
         binding.tvEdit.text = if (editMode) getString(R.string.done) else getString(R.string.edit)
-        binding.btDelete.visibility = if (editMode) View.VISIBLE else View.GONE
-        binding.btDelete.isEnabled = false
-        binding.tvSelectAll.visibility = if (editMode) View.VISIBLE else View.GONE
+        binding.editGroup.visibility = if (editMode) View.VISIBLE else View.GONE
+        binding.btDelete.isEnabled = adapter.currentList.any { it.isChecked }
     }
 
 
-    private fun generateList(n: Int = 30) = List(n) { Item(it, "ITEM $it") }
+    private fun generateList(n: Int = 25) = List(n) { Item(it, "ITEM $it") }
 }

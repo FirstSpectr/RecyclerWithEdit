@@ -8,6 +8,14 @@
     android:paddingHorizontal="16dp"
     tools:context=".MainActivity">
 
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/editGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="tvSelectAll, btDelete"
+        tools:visibility="visible" />
+
     <TextView
         android:id="@+id/tvSelectAll"
         android:layout_width="wrap_content"
@@ -16,7 +24,6 @@
         android:background="?android:selectableItemBackground"
         android:text="@string/select_all"
         android:textAllCaps="true"
-        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -31,6 +38,15 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="tvEdit, tvSelectAll"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvList"
         android:layout_width="0dp"
@@ -40,7 +56,7 @@
         app:layout_constraintBottom_toTopOf="@id/btDelete"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvEdit"
+        app:layout_constraintTop_toBottomOf="@id/barrier"
         tools:listitem="@layout/item" />
 
     <Button
@@ -49,10 +65,8 @@
         android:layout_height="wrap_content"
         android:enabled="false"
         android:text="@string/delete"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:visibility="visible" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
